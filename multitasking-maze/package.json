@@ -1,0 +1,32 @@
+{
+  "name": "multitasking-maze",
+  "version": "1.0.0",
+  "description": "A multitasking 3D maze generator and visualizer using Web Workers, CNN-inspired algorithms, and multi-language integration",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "worker:build": "esbuild src/workers/mazeWorker.js --bundle --outfile=public/mazeWorker.js",
+    "python:generate": "python python-utils/maze_generator.py"
+  },
+  "keywords": [
+    "maze",
+    "3d",
+    "multitasking",
+    "webgl",
+    "threejs",
+    "cnn",
+    "workers"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "esbuild": "^0.19.0"
+  }
+}

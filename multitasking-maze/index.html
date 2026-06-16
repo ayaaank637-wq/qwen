@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multitasking 3D Maze - CNN-Inspired Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #0a0a0a;
+            color: #fff;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #00f5ff, #0066ff);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .worker-status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .worker-active {
+            background: #00ff00;
+            animation: pulse 1s infinite;
+        }
+        
+        .worker-idle {
+            background: #ff6600;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        #stats {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            z-index: 100;
+        }
+        
+        .stat-item {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="ui-overlay">
+        <h1>🌀 Multitasking 3D Maze</h1>
+        
+        <div class="control-group">
+            <label for="mazeSize">Maze Size: <span id="sizeValue">21</span></label>
+            <input type="range" id="mazeSize" min="11" max="51" step="2" value="21">
+        </div>
+        
+        <div class="control-group">
+            <label for="complexity">Complexity: <span id="complexityValue">50</span>%</label>
+            <input type="range" id="complexity" min="10" max="100" value="50">
+        </div>
+        
+        <div class="control-group">
+            <label for="workerCount">Web Workers: <span id="workerCountValue">4</span></label>
+            <input type="range" id="workerCount" min="1" max="8" value="4">
+        </div>
+        
+        <button id="generateBtn">Generate Maze</button>
+        <button id="resetCameraBtn">Reset Camera</button>
+        
+        <div id="status">
+            <div><span class="worker-status worker-idle" id="workerIndicator"></span>Worker Status: <span id="workerText">Idle</span></div>
+            <div id="progressInfo" style="margin-top: 5px;"></div>
+        </div>
+    </div>
+    
+    <div id="stats">
+        <div class="stat-item">FPS: <span id="fpsCounter">0</span></div>
+        <div class="stat-item">Cells: <span id="cellCount">0</span></div>
+        <div class="stat-item">Generation Time: <span id="genTime">0</span>ms</div>
+        <div class="stat-item">Active Workers: <span id="activeWorkers">0</span></div>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
